@@ -1,39 +1,48 @@
-let tasks = []
-
-function addTask(task) {
-    if (typeof(task) == "object") {
-        tasks.push(task);
-    } else {
-        console.log(`Task object olmalidir: {task: "${task}", priority: "high", time: 30}`);
+let car = {
+    make: "Ford",
+    model: "Capri",
+    year: 1978,
+    __proto__: {
+        start(extraText) {
+            console.log(`${this.make} ${this.model} ise salindi. ${extraText}.`)
+        }
     }
 }
 
-function completeTask(index) {
-    tasks.splice(index, 1);
+car.start("Traditional")
+
+let car2 = {
+    make: "Dodge",
+    model: "Charger",
+    year: 1971
 }
 
-function listTasks() {
-    tasks.forEach((item) => {
-        console.log(`Task: ${item.task} | Priority: ${item.priority} | Time: ${item.time}`);
-    })
+// BIND
+let car2_start_bind = car.start.bind(car2)
+car2_start_bind("Bind")
+
+// CALL
+car.start.call(car2, "Call")
+
+// APPLY
+car.start.apply(car2, ["Apply"])
+
+
+
+let prototypeForCars = {
+    info() {
+        console.log(`Car model ${this.model} was made by ${this.make} in ${this.year}`)
+    }
 }
 
-function priorityTasks() {
-    tasks.filter(item => item.priority == "high").forEach((item) => {
-        console.log(`Task: ${item.task} | Time: ${item.time}`);
-    })
+let car3 = {
+    make: "Plymouth",
+    model: "GTX",
+    year: 1972,
+    __proto__: prototypeForCars // method 1
 }
 
-function totalTime() {
-    console.log(tasks.reduce((acc, cur) => {
-        return acc + cur.time        
-    }, 0))
-}
+// method 2
+// car3.__proto__ = prototypeForCars;
 
-function extensionTasks(newTasks) {
-    tasks = tasks.concat(newTasks)
-}
-
-function sliceTasks(start, end) {
-    tasks = tasks.slice(start,end)
-}
+car3.info()
